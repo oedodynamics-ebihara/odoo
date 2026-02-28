@@ -20,13 +20,14 @@
 # gezza <geza.nagy@oregional.hu>, 2023
 # Szabolcs Rádi, 2023
 # "Dylan Kiss (dyki)" <dyki@odoo.com>, 2025.
-# Nagy Géza <geza.nagy@oregional.hu>, 2025.
+# Nagy Géza <geza.nagy@oregional.hu>, 2025, 2026.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-09 12:16+0000\n"
-"PO-Revision-Date: 2025-10-31 02:30+0000\n"
+"PO-Revision-Date: 2026-02-02 13:44+0000\n"
 "Last-Translator: Nagy Géza <geza.nagy@oregional.hu>\n"
 "Language-Team: Hungarian <https://translate.odoo.com/projects/odoo-19/base/"
 "hu/>\n"
@@ -35,7 +36,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_at_reports
@@ -10265,7 +10266,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_appraisal_survey
 msgid "360 Feedback"
-msgstr ""
+msgstr "360° visszajelzés"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_3pl_logistic_company
@@ -10522,6 +10523,8 @@ msgid ""
 "<span class=\"o_form_label\" colspan=\"2\">Click on Update below to start "
 "the process...</span>"
 msgstr ""
+"<span class=\"o_form_label\" colspan=\"2\">Kattinston a Frissítés gombra a "
+"folyamat elindításához...</span>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_users_form
@@ -11021,7 +11024,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,description:base.module_test_uninstall
 msgid "A module to test the uninstall feature."
-msgstr "Modul az eltávolító teszteléséhez."
+msgstr "Modul az eltávolítás teszteléséhez."
 
 #. module: base
 #: model:ir.module.module,description:base.module_test_translation_import
@@ -11371,7 +11374,7 @@ msgstr "Hozzáférés"
 #. odoo-python
 #: code:addons/base/models/res_users.py:0
 msgid "Access Control"
-msgstr ""
+msgstr "Hozzáférés felügyelet"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_groups__model_access
@@ -12304,13 +12307,13 @@ msgstr ""
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__res_users__role__group_system
 msgid "Administrator"
-msgstr ""
+msgstr "Adminisztrátor"
 
 #. module: base
 #. odoo-python
 #: code:addons/base/models/ir_model.py:0
 msgid "Administrator access is required to uninstall a module"
-msgstr "Adminisztrátori hozzáférés szükséges a modul törléséhez"
+msgstr "Adminisztrátori hozzáférés szükséges a modul eltávolításához"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_country_form
@@ -12742,7 +12745,7 @@ msgstr ""
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.ir_filters_view_form
 msgid "All users"
-msgstr ""
+msgstr "Minden felhasználó"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_hr_holidays
@@ -12818,7 +12821,7 @@ msgstr ""
 #. module: base
 #: model:res.groups,name:base.group_allow_export
 msgid "Allowed"
-msgstr ""
+msgstr "Engedélyezett"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_actions_server__group_ids
@@ -14057,7 +14060,7 @@ msgstr "Beütemezett frissítések alkalmazása."
 #. module: base
 #: model:ir.module.category,name:base.module_category_services_appointment
 msgid "Appointment"
-msgstr ""
+msgstr "Időpontfoglalás"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_appointment_google_calendar
@@ -17424,7 +17427,7 @@ msgstr ""
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_server_action_form
 msgid "Choose a record..."
-msgstr ""
+msgstr "Rekord választása..."
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_country_form
@@ -17802,7 +17805,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.category,name:base.module_category_sales_commissions
 msgid "Commissions"
-msgstr ""
+msgstr "Jutalékok"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_iap_extract
@@ -17929,7 +17932,7 @@ msgstr "Vállalat értékelés"
 #: model:ir.model.fields,field_description:base.field_res_partner__company_registry_placeholder
 #: model:ir.model.fields,field_description:base.field_res_users__company_registry_placeholder
 msgid "Company Registry Placeholder"
-msgstr ""
+msgstr "Cégnyilvántartás Helyőrző"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_company__report_header
@@ -20560,7 +20563,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_dropshipping
 msgid "Dropshipping"
-msgstr ""
+msgstr "Közvetlen szállítás"
 
 #. module: base
 #. odoo-python
@@ -21207,7 +21210,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.category,name:base.module_category_theme_environment
 msgid "Environment"
-msgstr ""
+msgstr "Környezet"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_theme_treehouse
@@ -21234,7 +21237,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_equity
 msgid "Equity"
-msgstr ""
+msgstr "Saját tőke"
 
 #. module: base
 #: model:res.country,name:base.er
@@ -22991,7 +22994,7 @@ msgstr "Betűkészlet"
 #. module: base
 #: model:ir.module.category,name:base.module_category_theme_food
 msgid "Food"
-msgstr ""
+msgstr "Étel"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_food_distribution
@@ -23415,7 +23418,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_gallery
 msgid "Gallery"
-msgstr ""
+msgstr "Galéria"
 
 #. module: base
 #: model:res.country,name:base.gm
@@ -24337,7 +24340,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.category,name:base.module_category_theme_hidden
 msgid "Hidden"
-msgstr ""
+msgstr "Rejtett"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_timesheet
@@ -25830,6 +25833,15 @@ msgstr ""
 
 #. module: base
 #. odoo-python
+#: code:addons/base/models/ir_default.py:0
+#, python-format
+msgid ""
+"Invalid value in Default Value field. Expected type '%(field_type)s' for "
+"'%(model_name)s.%(field_name)s'."
+msgstr ""
+
+#. module: base
+#. odoo-python
 #: code:addons/template_inheritance.py:0
 msgid "Invalid attributes %s in element <attribute>"
 msgstr ""
@@ -26036,7 +26048,7 @@ msgstr ""
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__res_partner__type__invoice
 msgid "Invoice"
-msgstr ""
+msgstr "Számla"
 
 #. module: base
 #. odoo-python
@@ -27243,7 +27255,7 @@ msgstr "Libéria"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_library
 msgid "Library"
-msgstr ""
+msgstr "Könyvtár"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_theme_bookstore
@@ -27562,7 +27574,7 @@ msgstr ""
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.res_device_view_kanban
 msgid "Log out"
-msgstr ""
+msgstr "Kijelentkezés"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_users_form
@@ -28451,7 +28463,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.category,name:base.module_category_master_data
 msgid "Master Data"
-msgstr ""
+msgstr "Törzsadatok"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_mrp_mps
@@ -29837,7 +29849,7 @@ msgstr ""
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_partner_bank_form
 msgid "Note"
-msgstr ""
+msgstr "Megjegyzés"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_partner__comment
@@ -33030,7 +33042,7 @@ msgstr ""
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_groups_privilege__placeholder
 msgid "Placeholder"
-msgstr ""
+msgstr "Helykitöltő"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_project_forecast
@@ -36465,7 +36477,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.category,name:base.module_category_service
 msgid "Service"
-msgstr ""
+msgstr "Szolgáltatás"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_sale_timesheet_margin
@@ -36606,7 +36618,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.category,name:base.module_category_shipping_connectors
 msgid "Shipping Connectors"
-msgstr ""
+msgstr "Szállítmányozási összekötők"
 
 #. module: base
 #: model:ir.module.module,description:base.module_delivery_sendcloud
@@ -37515,7 +37527,7 @@ msgstr "Állapotok"
 #: model:ir.model.fields,field_description:base.field_res_partner__application_statistics
 #: model:ir.model.fields,field_description:base.field_res_users__application_statistics
 msgid "Stats"
-msgstr ""
+msgstr "Statisztikák"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_base_module_update__state
@@ -38236,7 +38248,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.category,name:base.module_category_technical_settings
 msgid "Technical Settings"
-msgstr ""
+msgstr "Technikai beállítások"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_groups__view_group_hierarchy
@@ -39941,7 +39953,7 @@ msgstr ""
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_base_module_upgrade
 msgid "This module will trigger the uninstallation of below modules."
-msgstr "Ez a modul kapcsolja a lenti modulok törlését."
+msgstr "Ez a modul elindítja az alábbi modulok eltávolítását."
 
 #. module: base
 #. odoo-python
@@ -40145,7 +40157,7 @@ msgstr ""
 #: model:ir.module.category,name:base.module_category_productivity_to-do
 #: model:ir.module.module,shortdesc:base.module_project_todo
 msgid "To-Do"
-msgstr ""
+msgstr "Teendő"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.ir_actions_todo_tree
@@ -40857,7 +40869,7 @@ msgstr "Modul eltávolítása"
 #. odoo-python
 #: code:addons/base/models/res_config.py:0
 msgid "Uninstall modules"
-msgstr ""
+msgstr "Modulok eltávolítása"
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__ir_module_module__state__uninstallable
@@ -40881,7 +40893,7 @@ msgstr ""
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.module_view_kanban
 msgid "Uninstall…"
-msgstr ""
+msgstr "Eltávolítás…"
 
 #. module: base
 #. odoo-python
@@ -41419,7 +41431,7 @@ msgstr "Felhasználó név"
 #. module: base
 #: model:ir.model,name:base.model_res_users_settings
 msgid "User Settings"
-msgstr ""
+msgstr "Felhasználói beállítások"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_users__device_ids
@@ -41845,7 +41857,7 @@ msgstr "Látható"
 #: model_terms:ir.ui.view,arch_db:base.view_currency_form
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form
 msgid "Visible to all"
-msgstr ""
+msgstr "Látható mindenkinek"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_frontdesk

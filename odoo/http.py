@@ -1203,8 +1203,6 @@ class Session(collections.abc.MutableMapping):
         self['pre_login'] = credential['login']
         self['pre_uid'] = pre_uid
 
-        env = env(user=pre_uid)
-
         # if 2FA is disabled we finalize immediately
         user = env['res.users'].browse(pre_uid)
         if auth_info.get('mfa') == 'skip' or not user._mfa_url():
@@ -2591,7 +2589,7 @@ class Json2Dispatcher(Dispatcher):
 
     @classmethod
     def is_compatible_with(cls, request):
-        return request.httprequest.mimetype in cls.mimetypes
+        return request.httprequest.mimetype in cls.mimetypes or not request.httprequest.content_length
 
     def dispatch(self, endpoint, args):
         # "args" are the path parameters, "id" in /web/image/<id>

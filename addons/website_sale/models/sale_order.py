@@ -237,6 +237,15 @@ class SaleOrder(models.Model):
     def _get_amount_total_excluding_delivery(self):
         return sum(self._get_non_delivery_lines().mapped('price_total'))
 
+    def _get_confirmation_template(self):
+        """Override of `sale` to use the website specific order confirmation email template if set."""
+        self.ensure_one()
+
+        if self.website_id and self.website_id.confirmation_email_template_id:
+            return self.website_id.confirmation_email_template_id
+
+        return super()._get_confirmation_template()
+
     def action_confirm(self):
         carts = self.filtered('website_id')
         if self.env.su:
@@ -262,10 +271,11 @@ class SaleOrder(models.Model):
     def _needs_customer_address(self):
         """Return whether we need the address details of the customer (country, street, ...).
 
-        If an order only has services, unless the customer wants an invoice, their checkout can
-        be sped up by allowing them to only provide their name, email and phone numbers.
+        Make it true by default as it's required before payment for taxes based on fiscal position.
         """
-        return not self.only_services
+        # TODO: should probably be removed in master, as we cannot skip the address form
+        # when the taxes applied on product/service depend on the fiscal position.
+        return True
 
     def _update_address(self, partner_id, fnames=None):
         if not fnames:
@@ -885,8 +895,13 @@ class SaleOrder(models.Model):
                 "Your cart is not ready to be paid, please verify previous steps."
             ))
 
-        if not self.only_services and not self.carrier_id:
-            raise ValidationError(_("No shipping method is selected."))
+        if not self.only_services:
+            if not self.carrier_id:
+                raise ValidationError(_("No shipping method is selected."))
+            if self.carrier_id not in self._get_delivery_methods():
+                raise ValidationError(
+                    _("The delivery method is not compatible with your delivery address.")
+                )
 
     def _recompute_cart(self):
         """Recompute taxes and prices for the current cart."""

@@ -209,9 +209,9 @@ export function clickPartnerButton() {
         },
     ];
 }
-export function clickCustomer(name) {
+export function clickCustomer(name, pressEnter = false) {
     return [
-        ...PartnerList.searchCustomerValue(name),
+        ...PartnerList.searchCustomerValue(name, pressEnter),
         PartnerList.clickPartner(name),
         { ...back(), isActive: ["mobile"] },
     ];
@@ -574,6 +574,37 @@ export function enterLotNumbers(numbers) {
     return steps;
 }
 
+export function enterExistingLotNumbers(numbers) {
+    const steps = [
+        {
+            trigger: ".o-autocomplete input",
+            run: "click",
+        },
+    ];
+    for (const lot of numbers) {
+        steps.push(
+            {
+                content: "enter lot number",
+                trigger: ".o-autocomplete input",
+                run: "edit " + lot,
+            },
+            {
+                trigger: ".o-autocomplete input",
+                run: "press Enter",
+            },
+            {
+                content: "check entered lot number",
+                trigger: `.lot-container .lot-item:eq(-1) span:contains(${lot})`,
+            },
+            {
+                trigger: ".o-autocomplete input:value()",
+            }
+        );
+    }
+    steps.push(Dialog.confirm());
+    return steps;
+}
+
 export function isShown() {
     return [
         {
@@ -840,7 +871,7 @@ export function checkTotalAmount(amount) {
 export function selectCategoryAndAddProduct(categoryName, productName) {
     return [
         {
-            trigger: `.category-button > span:contains(${categoryName})`,
+            trigger: `.category-button > div span:contains(${categoryName})`,
             run: "click",
         },
         ...addOrderline(productName, "1"),
@@ -850,7 +881,7 @@ export function selectCategoryAndAddProduct(categoryName, productName) {
 export function verifyCategorySequence(categories) {
     return categories.map((category, index) => ({
         content: `Verify '${category}' category has sequence number ${index + 1}`,
-        trigger: `.category-button > span:contains("${category}")`,
+        trigger: `.category-button > div span:contains("${category}")`,
     }));
 }
 
@@ -909,6 +940,13 @@ function productInputSteps(name, barcode, list_price) {
             run: `edit ${list_price}`,
         },
     ];
+}
+
+export function ensureTaxesInputIsReadonly() {
+    return {
+        content: "Taxes field should be readonly.",
+        trigger: 'div[name="taxes_id"].o_readonly_modifier',
+    };
 }
 
 export function createProductFromFrontend(name, barcode, list_price, category) {
@@ -1009,6 +1047,17 @@ export function openCartMobile() {
             trigger: ".switchpane .btn-switchpane:contains('Cart')",
             run: "click",
             isActive: ["mobile"],
+        },
+    ];
+}
+
+export function saveOrder() {
+    return [
+        clickReview(),
+        {
+            content: "save order",
+            trigger: ".pads .fa-upload",
+            run: "click",
         },
     ];
 }

@@ -35,6 +35,7 @@ export const isUnremovableQWebElement = (node) =>
 export class QWebPlugin extends Plugin {
     static id = "qweb";
     static dependencies = ["overlay", "protectedNode", "selection"];
+    /** @type {import("plugins").EditorResources} */
     resources = {
         /** Handlers */
         selectionchange_handlers: withSequence(8, this.onSelectionChange.bind(this)),
@@ -235,6 +236,11 @@ export class QWebPlugin extends Plugin {
         this.selectedNode = node;
         this.picker.close();
         this.selectNode(node);
+        // Force Chrome to clear the selection.
+        // Without this, Chrome's optimization may skip the 'selectionchange' event
+        // if the new node is structurally identical to the previous one
+        const selection = this.document.getSelection();
+        selection.removeAllRanges();
     }
 
     clearDataAttributes(root) {

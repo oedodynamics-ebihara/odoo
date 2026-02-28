@@ -99,6 +99,9 @@ registerMessageAction("reply-to", {
             }
         }
         owner.env.inChatter?.toggleComposer("note", { force: true });
+        if (!composer.isFocused) {
+            composer.autofocus++;
+        }
     },
     sequence: ({ message, store, thread }) =>
         thread?.eq(store.inbox) || message.isSelfAuthored ? 55 : 20,
@@ -139,7 +142,7 @@ registerMessageAction("edit", {
         message.enterEditMode(thread);
         owner.optionsDropdown?.close();
     },
-    sequence: ({ message }) => (message.isSelfAuthored ? 20 : 55),
+    sequence: ({ message }) => (message.isSelfAuthored ? 20 : 115),
 });
 registerMessageAction("delete", {
     condition: ({ message }) => message.editable,

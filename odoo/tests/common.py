@@ -119,9 +119,9 @@ DEFAULT_SUCCESS_SIGNAL = 'test successful'
 TEST_CURSOR_COOKIE_NAME = 'test_request_key'
 
 IGNORED_MSGS = re.compile(r"""
-    (?: failed\ to\ fetch  # base error
-      | connectionlosterror:  # conversion by offlineFailToFetchErrorHandler
-    )
+    failed\ to\ fetch  # base error
+  | connectionlosterror:  # conversion by offlineFailToFetchErrorHandler
+  | assetsloadingerror: # lazy loaded bundle
 """, flags=re.VERBOSE | re.IGNORECASE).search
 
 def get_db_name():
@@ -398,7 +398,7 @@ class BaseCase(case.TestCase):
                 patcher.stop()
         cls.addClassCleanup(check_remaining_patchers)
         super().setUpClass()
-        if 'standard' in cls.test_tags:
+        if 'standard' in cls.test_tags or 'click_all' in cls.test_tags:
             # if the method is passed directly `patch` discards the session
             # object which we need
             # pylint: disable=unnecessary-lambda
@@ -1459,6 +1459,8 @@ class ChromeBrowser:
             '--disable-translate': '',
             '--no-sandbox': '',
             '--disable-gpu': '',
+            '--enable-unsafe-swiftshader': '',
+            '--mute-audio': '',
         }
         switches = {
             # required for tours that use Youtube autoplay conditions (namely website_slides' "course_tour")
@@ -1673,7 +1675,7 @@ class ChromeBrowser:
             self._websocket_send(cmd, params={'requestId': params['requestId'], **response})
         except websocket.WebSocketConnectionClosedException:
             pass
-        except (BrokenPipeError, ConnectionResetError):
+        except (BrokenPipeError, ConnectionResetError, OSError):
             # this can happen if the browser is closed. Just ignore it.
             _logger.info("Websocket error while handling request %s", params['request']['url'])
 
@@ -2068,7 +2070,7 @@ class Screencaster:
                 '-y', '-loglevel', 'warning',
                 '-f', 'concat', '-safe', '0', '-i', concat_script_path,
                 '-vf', 'pad=ceil(iw/2)*2:ceil(ih/2)*2',
-                '-pix_fmt', 'yuv420p', '-g', '0',
+                '-c:v', 'libx265', '-x265-params', 'lossless=1',
                 outfile,
             ], preexec_fn=_preexec, check=True)
         except subprocess.CalledProcessError:
@@ -2311,13 +2313,25 @@ class HttpCase(TransactionCase):
         self.session.logout(keep_db=keep_db)
         odoo.http.root.session_store.save(self.session)
 
-    def authenticate(self, user, password, browser: ChromeBrowser = None):
+    def authenticate(self, user, password, *,
+        browser: ChromeBrowser = None, session_extra: dict | None = None):
         if getattr(self, 'session', None):
             odoo.http.root.session_store.delete(self.session)
 
         self.session = session = odoo.http.root.session_store.new()
-        session.update(odoo.http.get_default_session(), db=get_db_name())
+        session.update(
+            odoo.http.get_default_session(),
+            db=get_db_name(),
+            # In order to avoid perform a query to each first `url_open`
+            # in a test (insert `res.device.log`).
+            _trace_disable=True,
+        )
         session.context['lang'] = odoo.http.DEFAULT_LANG
+
+        if session_extra:
+            if extra_ctx := session_extra.pop('context', None):
+                session.context.update(extra_ctx)
+            session.update(session_extra)
 
         if user: # if authenticated
             # Flush and clear the current transaction.  This is useful, because

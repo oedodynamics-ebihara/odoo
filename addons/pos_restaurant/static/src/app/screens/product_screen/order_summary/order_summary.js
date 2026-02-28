@@ -35,7 +35,6 @@ patch(OrderSummary.prototype, {
     async unbookTable() {
         const order = this.pos.getOrder();
         await this.pos.deleteOrders([order]);
-        this.pos.navigate("FloorScreen");
     },
     showUnbookButton() {
         if (this.pos.selectedTable) {
@@ -63,5 +62,12 @@ patch(OrderSummary.prototype, {
             currentOrder.isEmpty() &&
             !currentOrder.hasCourses()
         );
+    },
+    async updateSelectedOrderline({ buffer, key }) {
+        await super.updateSelectedOrderline(...arguments);
+
+        if (this.pos.getOrder() && this.pos.config.module_pos_restaurant) {
+            this.pos.addPendingOrder([this.pos.getOrder().id]);
+        }
     },
 });

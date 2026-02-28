@@ -243,7 +243,7 @@ export function useSelectableComponent(id, { onItemChange } = {}) {
     });
 
     function refreshCurrentItem() {
-        if (env.editor.isDestroyed) {
+        if (env.editor.isDestroyed || env.editor.shared.history.getIsPreviewing()) {
             return;
         }
         let currentItem;
@@ -459,6 +459,31 @@ function useWithLoadingEffect(getAllActions) {
     return withLoadingEffect;
 }
 
+function useCanTimeout(getAllActions) {
+    const env = useEnv();
+    const getAction = env.editor.shared.builderActions.getAction;
+    let canTimeout = true;
+    for (const descr of getAllActions()) {
+        if (descr.actionId) {
+            const action = getAction(descr.actionId);
+            if (action.canTimeout === false) {
+                canTimeout = false;
+            }
+        }
+    }
+
+    return canTimeout;
+}
+
+export function revertPreview(editor) {
+    if (editor.isDestroyed) {
+        return;
+    }
+    // The `next` will cancel the previous operation, which will revert
+    // the operation in case of a preview.
+    return editor.shared.operation.next();
+}
+
 export function useClickableBuilderComponent() {
     useBuilderComponent();
     const comp = useComponent();
@@ -476,17 +501,24 @@ export function useClickableBuilderComponent() {
     const operationWithReload = useOperationWithReload(callApply, reload);
 
     const withLoadingEffect = useWithLoadingEffect(getAllActions);
+    const canTimeout = useCanTimeout(getAllActions);
 
     let preventNextPreview = false;
     const operation = {
         commit: () => {
             preventNextPreview = false;
             if (reload) {
-                callOperation(operationWithReload);
+                callOperation(operationWithReload, {
+                    operationParams: {
+                        withLoadingEffect: withLoadingEffect,
+                        canTimeout: canTimeout,
+                    },
+                });
             } else {
                 callOperation(applyOperation.commit, {
                     operationParams: {
                         withLoadingEffect: withLoadingEffect,
+                        canTimeout: canTimeout,
                     },
                 });
             }
@@ -502,14 +534,13 @@ export function useClickableBuilderComponent() {
                 operationParams: {
                     cancellable: true,
                     cancelPrevious: () => applyOperation.revert(),
+                    canTimeout: canTimeout,
                 },
             });
         },
         revert: () => {
             preventNextPreview = false;
-            // The `next` will cancel the previous operation, which will revert
-            // the operation in case of a preview.
-            comp.env.editor.shared.operation.next();
+            revertPreview(comp.env.editor);
         },
     };
 
@@ -617,12 +648,14 @@ function useOperationWithReload(callApply, reload) {
     const env = useEnv();
     return async (...args) => {
         const { editingElement } = args[0][0];
+        env.services.ui.block();
         await callApply(...args);
         env.editor.shared.history.addStep();
         await env.editor.shared.savePlugin.save();
         const target = env.editor.shared.builderOptions.getReloadSelector(editingElement);
         const url = reload.getReloadUrl?.();
         await env.editor.config.reloadEditor({ target, url });
+        env.services.ui.unblock();
     };
 }
 
@@ -650,6 +683,13 @@ export function useInputBuilderComponent({
     const { reload } = useReloadAction(getAllActions);
 
     const withLoadingEffect = useWithLoadingEffect(getAllActions);
+    const canTimeout = useCanTimeout(getAllActions);
+
+    onWillUpdateProps((nextProps) => {
+        if ("default" in nextProps) {
+            defaultValue = nextProps.default;
+        }
+    });
 
     async function callApply(applySpecs, isPreviewing) {
         const proms = [];
@@ -690,11 +730,20 @@ export function useInputBuilderComponent({
         userInputValue = getValueWithDefault(userInputValue, defaultValue, formatRawValue);
         const rawValue = parseDisplayValue(userInputValue);
         if (reload) {
-            callOperation(operationWithReload, { userInputValue: rawValue });
+            callOperation(operationWithReload, {
+                userInputValue: rawValue,
+                operationParams: {
+                    withLoadingEffect: withLoadingEffect,
+                    canTimeout: canTimeout,
+                },
+            });
         } else {
             callOperation(applyOperation.commit, {
                 userInputValue: rawValue,
-                withLoadingEffect: withLoadingEffect,
+                operationParams: {
+                    withLoadingEffect: withLoadingEffect,
+                    canTimeout: canTimeout,
+                },
             });
         }
         if (rawValue === null || (rawValue === defaultValue && rawValue === state.value)) {
@@ -716,6 +765,7 @@ export function useInputBuilderComponent({
                 operationParams: {
                     cancellable: true,
                     cancelPrevious: () => applyOperation.revert(),
+                    canTimeout: canTimeout,
                 },
             });
         }

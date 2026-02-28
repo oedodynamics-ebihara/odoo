@@ -15,6 +15,7 @@ import { fillEmpty } from "../utils/dom";
 export class SeparatorPlugin extends Plugin {
     static id = "separator";
     static dependencies = ["selection", "history", "split", "delete", "lineBreak", "baseContainer"];
+    /** @type {import("plugins").EditorResources} */
     resources = {
         user_commands: [
             {
@@ -84,8 +85,11 @@ export class SeparatorPlugin extends Plugin {
         }
     }
 
-    handleSelectionInHr() {
+    handleSelectionInHr(selectionData) {
         this.deselectHR();
+        if (!selectionData.documentSelectionIsInEditable) {
+            return;
+        }
         const targetedNodes = this.dependencies.selection.getTargetedNodes();
         for (const node of targetedNodes) {
             if (node.nodeName === "HR") {
